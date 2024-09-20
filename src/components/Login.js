@@ -2,208 +2,426 @@ import React, { useState } from 'react';
 import { signInWithEmailAndPassword } from 'firebase/auth';
 import { auth } from '../firebase'; // Firebase authentication instance
 import styled from "styled-components";
+import { Link, useNavigate } from "react-router-dom";
+import '../App.css'
 
 const Login = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
+    const navigate = useNavigate(); 
 
     const handleSubmit = async (e) => {
-        e.preventDefault();
-        try {
-            await signInWithEmailAndPassword(auth, email, password);
-            alert('Logged in successfully!');
-            // Redirect to user dashboard or admin page based on role
-        } catch (error) {
-            setError('Invalid email or password');
-        }
+      e.preventDefault();
+      try {
+        await signInWithEmailAndPassword(auth, email, password);
+        navigate('/dashboard'); // Redirect to the dashboard upon successful login
+      } catch (error) {
+        setError(error.message);
+      }
     };
 
     return (
-        <StyledWrapper>
-            <form className="form" onSubmit={handleSubmit}>
-                <div className="flex-column">
-                    <label>Email </label>
-                </div>
-                <div className="inputForm">
-                    <svg
-                        height="20"
-                        viewBox="0 0 32 32"
-                        width="20"
-                        xmlns="http://www.w3.org/2000/svg"
-                    >
-                        <g id="Layer_3" data-name="Layer 3">
-                            <path d="m30.853 13.87a15 15 0 0 0 -29.729 4.082 15.1 15.1 0 0 0 12.876 12.918 15.6 15.6 0 0 0 2.016.13 14.85 14.85 0 0 0 7.715-2.145 1 1 0 1 0 -1.031-1.711 13.007 13.007 0 1 1 5.458-6.529 2.149 2.149 0 0 1 -4.158-.759v-10.856a1 1 0 0 0 -2 0v1.726a8 8 0 1 0 .2 10.325 4.135 4.135 0 0 0 7.83.274 15.2 15.2 0 0 0 .823-7.455zm-14.853 8.13a6 6 0 1 1 6-6 6.006 6.006 0 0 1 -6 6z" />
-                        </g>
-                    </svg>
-                    <input type="text" value={email} onChange={(e) => setEmail(e.target.value)} className="input" placeholder="Enter your Email" />
-                </div>
+<StyledWrapper>
+<div id="Container">
+{error && <p style={{ color: 'red' }}>{error}</p>}
+  <form className="form"  onSubmit={handleSubmit}>
+    <div id="login-lable">Login</div>
+    <input className="form-content" value={email} onChange={(e) => setEmail(e.target.value)} type="text" placeholder="UserName" />
+    <input
+      className="form-content" value={password}
+      onChange={(e) => setPassword(e.target.value)}
+      type="password"
+      placeholder="PassWord"
+    />
+    <button type="submit">Continue</button>
 
-                <div className="flex-column">
-                    <label>Password </label>
-                </div>
-                <div className="inputForm">
-                    <svg
-                        height="20"
-                        viewBox="-64 0 512 512"
-                        width="20"
-                        xmlns="http://www.w3.org/2000/svg"
-                    >
-                        <path d="m336 512h-288c-26.453125 0-48-21.523438-48-48v-224c0-26.476562 21.546875-48 48-48h288c26.453125 0 48 21.523438 48 48v224c0 26.476562-21.546875 48-48 48zm-288-288c-8.8125 0-16 7.167969-16 16v224c0 8.832031 7.1875 16 16 16h288c8.8125 0 16-7.167969 16-16v-224c0-8.832031-7.1875-16-16-16zm0 0" />
-                        <path d="m304 224c-8.832031 0-16-7.167969-16-16v-80c0-52.929688-43.070312-96-96-96s-96 43.070312-96 96v80c0 8.832031-7.167969 16-16 16s-16-7.167969-16-16v-80c0-70.59375 57.40625-128 128-128s128 57.40625 128 128v80c0 8.832031-7.167969 16-16 16zm0 0" />
-                    </svg>
-                    <input
-                        type="password" value={password}
-                        onChange={(e) => setPassword(e.target.value)}
-                        className="input"
-                        placeholder="Enter your Password"
-                    />
-                    <svg
-                        viewBox="0 0 576 512"
-                        height="1em"
-                        xmlns="http://www.w3.org/2000/svg"
-                    >
-                        <path d="M288 32c-80.8 0-145.5 36.8-192.6 80.6C48.6 156 17.3 208 2.5 243.7c-3.3 7.9-3.3 16.7 0 24.6C17.3 304 48.6 356 95.4 399.4C142.5 443.2 207.2 480 288 480s145.5-36.8 192.6-80.6c46.8-43.5 78.1-95.4 93-131.1c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C433.5 68.8 368.8 32 288 32zM144 256a144 144 0 1 1 288 0 144 144 0 1 1 -288 0zm144-64c0 35.3-28.7 64-64 64c-7.1 0-13.9-1.2-20.3-3.3c-5.5-1.8-11.9 1.6-11.7 7.4c.3 6.9 1.3 13.8 3.2 20.7c13.7 51.2 66.4 81.6 117.6 67.9s81.6-66.4 67.9-117.6c-11.1-41.5-47.8-69.4-88.6-71.1c-5.8-.2-9.2 6.1-7.4 11.7c2.1 6.4 3.3 13.2 3.3 20.3z" />
-                    </svg>
-                </div>
+    <p>Don't have an account? <Link to="/register" >Sign Up</Link>  </p>
+  </form>
 
-                <div className="flex-row">
-                    <div>
-                        <input type="checkbox" />
-                        <label>Remember me </label>
-                    </div>
-                    <span className="span">Forgot password?</span>
-                </div>
-                <button type="submit" className="button-submit">Sign In</button>
-                <p className="p">
-                    Don&apos;t have an account? <span className="span">Sign Up</span>
-                </p>
-                <p className="p line">Or With</p>
+  <div id="rays">
+    <svg
+      fill="none"
+      viewBox="0 0 299 152"
+      height="9em"
+      width="18em"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path
+        fill="url(#paint0_linear_8_3)"
+        d="M149.5 152H133.42L9.53674e-07 4.70132e-06H149.5L299 4.70132e-06L165.58 152H149.5Z"
+      />
+      <defs>
+        <linearGradient
+          gradientUnits="userSpaceOnUse"
+          y2="12.1981"
+          x2="150.12"
+          y1="152"
+          x1="149.5"
+          id="paint0_linear_8_3"
+        >
+          <stop stopColor="#00E0FF" />
+          <stop stopOpacity="0" stopColor="#65EDFF" offset="1" />
+        </linearGradient>
+      </defs>
+    </svg>
+  </div>
 
-            </form>
-        </StyledWrapper>
+  <div id="emiter">
+    <svg
+      fill="none"
+      viewBox="0 0 160 61"
+      height="61"
+      width="160"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <g filter="url(#filter0_di_1_38)">
+        <path
+          fill="#2B2B2B"
+          d="M80 27.9997C121.974 27.9997 156 22.4032 156 15.4996L156 40.4998C156 47.4034 121.974 52.9998 80 52.9998C38.0265 52.9998 4.00028 47.4034 4 40.4998V40.4998V15.51C4.0342 22.4089 38.0474 27.9997 80 27.9997Z"
+          clipRule="evenodd"
+          fillRule="evenodd"
+        />
+      </g>
+      <ellipse
+        fill="url(#paint0_radial_1_38)"
+        ry="4.80773"
+        rx="28.3956"
+        cy="17.4236"
+        cx="80"
+      />
+      <g filter="url(#filter1_i_1_38)">
+        <path
+          fill="#323232"
+          d="M80 28.0002C121.974 28.0002 156 22.4037 156 15.5001C156 8.59648 121.974 3 80 3C38.0264 3 4 8.59648 4 15.5001C4 22.4037 38.0264 28.0002 80 28.0002ZM80.0001 20.308C96.1438 20.308 109.231 18.1555 109.231 15.5002C109.231 12.845 96.1438 10.6925 80.0001 10.6925C63.8564 10.6925 50.7693 12.845 50.7693 15.5002C50.7693 18.1555 63.8564 20.308 80.0001 20.308Z"
+          clipRule="evenodd"
+          fillRule="evenodd"
+        />
+      </g>
+      <g filter="url(#filter2_di_1_38)">
+        <path
+          fill="#378BA6"
+          d="M106.725 17.4505C108.336 16.8543 109.231 16.1943 109.231 15.4999C109.231 12.8446 96.1438 10.6921 80.0001 10.6921C63.8564 10.6921 50.7693 12.8446 50.7693 15.4999C50.7693 16.1943 51.6645 16.8543 53.2752 17.4504C53.275 17.4414 53.2748 17.4323 53.2748 17.4232C53.2748 14.768 65.2401 12.6155 80.0001 12.6155C94.7601 12.6155 106.725 14.768 106.725 17.4232C106.725 17.4323 106.725 17.4414 106.725 17.4505Z"
+          clipRule="evenodd"
+          fillRule="evenodd"
+        />
+      </g>
+      <defs>
+        <filter
+          colorInterpolationFilters="sRGB"
+          filterUnits="userSpaceOnUse"
+          height="45.5002"
+          width="160"
+          y="15.4996"
+          x="0"
+          id="filter0_di_1_38"
+        >
+          <feFlood result="BackgroundImageFix" floodOpacity="0" />
+          <feColorMatrix
+            result="hardAlpha"
+            values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0"
+            type="matrix"
+            in="SourceAlpha"
+          />
+          <feOffset dy="4" />
+          <feGaussianBlur stdDeviation="2" />
+          <feComposite operator="out" in2="hardAlpha" />
+          <feColorMatrix
+            values="0 0 0 0 0.620833 0 0 0 0 0.620833 0 0 0 0 0.620833 0 0 0 0.25 0"
+            type="matrix"
+          />
+          <feBlend
+            result="effect1_dropShadow_1_38"
+            in2="BackgroundImageFix"
+            mode="normal"
+          />
+          <feBlend
+            result="shape"
+            in2="effect1_dropShadow_1_38"
+            in="SourceGraphic"
+            mode="normal"
+          />
+          <feColorMatrix
+            result="hardAlpha"
+            values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0"
+            type="matrix"
+            in="SourceAlpha"
+          />
+          <feOffset />
+          <feGaussianBlur stdDeviation="8" />
+          <feComposite
+            k3="1"
+            k2="-1"
+            operator="arithmetic"
+            in2="hardAlpha"
+          />
+          <feColorMatrix
+            values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 0"
+            type="matrix"
+          />
+          <feBlend
+            result="effect2_innerShadow_1_38"
+            in2="shape"
+            mode="normal"
+          />
+        </filter>
+        <filter
+          colorInterpolationFilters="sRGB"
+          filterUnits="userSpaceOnUse"
+          height="25.0002"
+          width="152"
+          y="3"
+          x="4"
+          id="filter1_i_1_38"
+        >
+          <feFlood result="BackgroundImageFix" floodOpacity="0" />
+          <feBlend
+            result="shape"
+            in2="BackgroundImageFix"
+            in="SourceGraphic"
+            mode="normal"
+          />
+          <feColorMatrix
+            result="hardAlpha"
+            values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0"
+            type="matrix"
+            in="SourceAlpha"
+          />
+          <feMorphology
+            result="effect1_innerShadow_1_38"
+            in="SourceAlpha"
+            operator="erode"
+            radius="3"
+          />
+          <feOffset />
+          <feGaussianBlur stdDeviation="6.5" />
+          <feComposite
+            k3="1"
+            k2="-1"
+            operator="arithmetic"
+            in2="hardAlpha"
+          />
+          <feColorMatrix
+            values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 0"
+            type="matrix"
+          />
+          <feBlend
+            result="effect1_innerShadow_1_38"
+            in2="shape"
+            mode="normal"
+          />
+        </filter>
+        <filter
+          colorInterpolationFilters="sRGB"
+          filterUnits="userSpaceOnUse"
+          height="26.7583"
+          width="78.4615"
+          y="0.692139"
+          x="40.7693"
+          id="filter2_di_1_38"
+        >
+          <feFlood result="BackgroundImageFix" floodOpacity="0" />
+          <feColorMatrix
+            result="hardAlpha"
+            values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0"
+            type="matrix"
+            in="SourceAlpha"
+          />
+          <feMorphology
+            result="effect1_dropShadow_1_38"
+            in="SourceAlpha"
+            operator="dilate"
+            radius="2"
+          />
+          <feOffset />
+          <feGaussianBlur stdDeviation="4" />
+          <feComposite operator="out" in2="hardAlpha" />
+          <feColorMatrix
+            values="0 0 0 0 0 0 0 0 0 0.941176 0 0 0 0 1 0 0 0 1 0"
+            type="matrix"
+          />
+          <feBlend
+            result="effect1_dropShadow_1_38"
+            in2="BackgroundImageFix"
+            mode="color-dodge"
+          />
+          <feBlend
+            result="shape"
+            in2="effect1_dropShadow_1_38"
+            in="SourceGraphic"
+            mode="normal"
+          />
+          <feColorMatrix
+            result="hardAlpha"
+            values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0"
+            type="matrix"
+            in="SourceAlpha"
+          />
+          <feMorphology
+            result="effect2_innerShadow_1_38"
+            in="SourceAlpha"
+            operator="erode"
+            radius="1"
+          />
+          <feOffset />
+          <feGaussianBlur stdDeviation="2" />
+          <feComposite
+            k3="1"
+            k2="-1"
+            operator="arithmetic"
+            in2="hardAlpha"
+          />
+          <feColorMatrix
+            values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.52 0"
+            type="matrix"
+          />
+          <feBlend
+            result="effect2_innerShadow_1_38"
+            in2="shape"
+            mode="normal"
+          />
+        </filter>
+        <radialGradient
+          gradientTransform="translate(80 17.4236) rotate(90) scale(6.25004 36.9143)"
+          gradientUnits="userSpaceOnUse"
+          r="1"
+          cy="0"
+          cx="0"
+          id="paint0_radial_1_38"
+        >
+          <stop stopColor="#00FFF0" />
+          <stop stopColor="#001AFF" offset="0.901042" />
+        </radialGradient>
+      </defs>
+    </svg>
+  </div>
+</div>
+</StyledWrapper>
     );
 };
 
 const StyledWrapper = styled.div`
-  .form {
+html {
+background-color: #282c34;
+}
+ #Container {
   display: flex;
   flex-direction: column;
-  gap: 10px;
-  background-color: #ffffff;
-  padding: 30px;
-  width: 450px;
-  border-radius: 20px;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-}
-
-::placeholder {
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-}
-
-.form button {
-  align-self: flex-end;
-}
-
-.flex-column > label {
-  color: #151717;
-  font-weight: 600;
-}
-
-.inputForm {
-  border: 1.5px solid #ecedec;
-  border-radius: 10px;
-  height: 50px;
-  display: flex;
   align-items: center;
-  padding-left: 10px;
-  transition: 0.2s ease-in-out;
-}
-
-.input {
-  margin-left: 10px;
-  border-radius: 10px;
-  border: none;
-  width: 85%;
+  justify-content: flex-end;
   height: 100%;
 }
 
-.input:focus {
-  outline: none;
+#rays {
+  z-index: 2;
+  position: relative;
+  bottom: -1.5em;
+  animation: rays 2s ease-in-out infinite;
 }
 
-.inputForm:focus-within {
-  border: 1.5px solid #2d79f3;
-}
-
-.flex-row {
+.form {
+  position: relative;
+  top: 5em;
+  padding: 4%;
+  z-index: 3;
   display: flex;
-  flex-direction: row;
-  align-items: center;
-  gap: 10px;
-  justify-content: space-between;
+  flex-direction: column;
+  border-radius: 0.5rem;
+  border: 4px solid #fff;
+  background: rgba(0, 255, 240, 0.52);
+  box-shadow: 0px 0px 64px 0px #82e1ff inset, 0px 0px 16px #a8fffaa6;
+  backdrop-filter: blur(3.5px);
+  gap: 1em;
+  animation: float 2s ease-in-out infinite;
 }
 
-.flex-row > div > label {
-  font-size: 14px;
-  color: black;
-  font-weight: 400;
-}
-
-.span {
-  font-size: 14px;
-  margin-left: 5px;
-  color: #2d79f3;
-  font-weight: 500;
-  cursor: pointer;
-}
-
-.button-submit {
-  margin: 20px 0 10px 0;
-  background-color: #151717;
-  border: none;
-  color: white;
-  font-size: 15px;
-  font-weight: 500;
-  border-radius: 10px;
-  height: 50px;
-  width: 100%;
-  cursor: pointer;
-}
-
-.button-submit:hover {
-  background-color: #252727;
-}
-
-.p {
+#login-lable {
   text-align: center;
-  color: black;
-  font-size: 14px;
-  margin: 5px 0;
+  color: white;
+  font-size: 2rem;
+  font-weight: 600;
+  letter-spacing: 8px;
+  text-shadow: 0px 0px 16px rgb(243, 243, 243);
 }
 
-.btn {
-  margin-top: 10px;
-  width: 100%;
-  height: 50px;
-  border-radius: 10px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-weight: 500;
-  gap: 10px;
-  border: 1px solid #ededef;
-  background-color: white;
+.form-content {
+  height: 3em;
+  padding: 1px 8px;
+  color: white;
+  text-decoration: none;
+  letter-spacing: 1px;
+  font-weight: bold;
+  border-radius: 6px;
+  border: 2px solid #fff;
+  background: rgba(139, 255, 247, 0.486);
+  box-shadow: 0px 0px 1px 3px #9ee5e3 inset, 0px 4px 4px 0px #181a6040;
+  text-shadow: 0px 1px 4px rgb(243, 243, 243);
+}
+
+.form-content:focus-visible {
+  outline: none;
+  text-decoration: none;
+  background: rgba(139, 189, 255, 0.59);
+  box-shadow: 0px 0px 1px 4px #9ee5e3;
+}
+
+.form-content:hover {
+  background: rgba(139, 189, 255, 0.59);
+}
+
+::placeholder {
+  font-weight: 300;
+  color: white;
+  letter-spacing: 0.1rem;
+  text-shadow: 0px 1px 5px rgb(66, 66, 66);
+}
+
+.form button {
   cursor: pointer;
-  transition: 0.2s ease-in-out;
+  height: 3.5rem;
+  padding: 0%;
+  color: white;
+  font-size: 1.5em;
+  letter-spacing: 0.3rem;
+  border: 2px solid white;
+  background: linear-gradient(144deg, #9c11ffce, #2000eeb6 50%, #15efffbb);
 }
 
-.btn:hover {
-  border: 1px solid #2d79f3;
-  ;
+.form button:hover {
+  position: relative;
+  bottom: 4px;
+  background: linear-gradient(144deg, #9c11ff, #2000ee 50%, #15fff3);
+  box-shadow: 0px 0px 2px 2px #ffffff;
 }
 
-    
+@keyframes float {
+  0% {
+    position: relative;
+  }
+
+  50% {
+    top: 50px;
+  }
+
+  100% {
+    position: relative;
+  }
+}
+
+@keyframes rays {
+  0% {
+    opacity: 0.6;
+  }
+
+  50% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 0.6;
+  }
+}
+
 `;
 
 export default Login;
