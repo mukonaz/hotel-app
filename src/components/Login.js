@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
+import {Link, useNavigate } from 'react-router-dom';
 import { signInWithEmailAndPassword } from 'firebase/auth';
-import { auth } from '../firebase'; // Firebase authentication instance
+import { doc, getDoc } from 'firebase/firestore';
+import { auth, db } from '../firebase'; 
 import styled from "styled-components";
-import { Link, useNavigate } from "react-router-dom";
-import '../App.css'
 
 const Login = () => {
     const [email, setEmail] = useState('');
@@ -11,15 +11,26 @@ const Login = () => {
     const [error, setError] = useState('');
     const navigate = useNavigate(); 
 
-    const handleSubmit = async (e) => {
-      e.preventDefault();
-      try {
-        await signInWithEmailAndPassword(auth, email, password);
-        navigate('/dashboard'); // Redirect to the dashboard upon successful login
-      } catch (error) {
-        setError(error.message);
+const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const userCredential = await signInWithEmailAndPassword(auth, email, password);
+      const user = userCredential.user;
+
+      
+      const userDoc = await getDoc(doc(db, 'users', user.uid));
+      if (userDoc.exists()) {
+        const userData = userDoc.data();
+        if (userData.role === 'admin') {
+          navigate('/admin');
+        } else {
+          navigate('/dashboard'); 
+        }
       }
-    };
+    } catch (error) {
+      setError(error.message);
+    }
+  };
 
     return (
 <StyledWrapper>

@@ -1,12 +1,29 @@
-import React, { useContext } from 'react';
-import { Navigate } from 'react-router-dom';
-import { AuthContext } from './AuthProvider';
+import React from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useAuthState } from 'react-firebase-hooks/auth';
+import { doc, getDoc } from 'firebase/firestore';
+import { auth, db } from '../firebase'; 
 
 const ProtectedRoute = ({ children }) => {
-  const currentUser = useContext(AuthContext);
+  const [user, loading] = useAuthState(auth);
+  const navigate = useNavigate();
 
-  // You could also add more checks here for roles if needed
-  return currentUser ? children : <Navigate to="/login" />;
+  React.useEffect(() => {
+    const checkAdmin = async () => {
+      if (user) {
+        const userDoc = await getDoc(doc(db, 'users', user.uid));
+        if (userDoc.exists() && userDoc.data().role !== 'admin') {
+          navigate('/'); 
+        }
+      } else if (!loading) {
+        navigate('/login'); 
+      }
+    };
+
+    checkAdmin();
+  }, [user, loading, navigate]);
+
+  return user ? children : null; 
 };
 
 export default ProtectedRoute;

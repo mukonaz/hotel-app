@@ -3,14 +3,14 @@ import { getFirestore } from 'firebase/firestore';
 import { getAuth } from 'firebase/auth';
 
 const firebaseConfig = {
-    apiKey: "AIzaSyAppwrJqMEXYZoujNT4HIi5pNZEA1Tsg5Y",
-    authDomain: "hotel-app-688af.firebaseapp.com",
-    projectId: "hotel-app-688af",
-    storageBucket: "hotel-app-688af.appspot.com",
-    messagingSenderId: "1021865749840",
-    appId: "1:1021865749840:web:20b705ad6785a6d5369055",
-    measurementId: "G-BSPQCVQ3YH"
-  };
+  apiKey: "YOUR_API_KEY",
+  authDomain: "YOUR_AUTH_DOMAIN",
+  projectId: "YOUR_PROJECT_ID",
+  storageBucket: "YOUR_STORAGE_BUCKET",
+  messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
+  appId: "YOUR_APP_ID"
+};
 const app = initializeApp(firebaseConfig);
 export const db = getFirestore(app);
 export const auth = getAuth(app);
+
