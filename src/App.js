@@ -4,9 +4,9 @@ import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import Login from './components/Login';
 import Register from './components/Register';
 import Dashboard from './components/Dashboard'; // User dashboard
-import AdminDashboard from './components/AdminDashboard'; // Admin dashboard
-import AddRoom from './components/AddRoom';
-import RoomList from './components/RoomList';
+import AdminDashboard from './Admin/AdminDashboard'; // Admin dashboard
+import AddRoom from './Rooms/AddRoom';
+import RoomList from './Rooms/RoomList';
 // import Home from './components/Home';
 import ProtectedRoute from './components/ProtectedRoute'; // Protect admin route
 
