@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import {Link, useNavigate } from 'react-router-dom';
 import { signInWithEmailAndPassword } from 'firebase/auth';
 import { doc, getDoc } from 'firebase/firestore';
-import { auth, db } from '../firebase'; // Import Firebase auth and Firestore
+import { auth, db } from '../firebase'; 
 
 const AdminLogin = () => {
   const [email, setEmail] = useState('');
@@ -12,15 +12,15 @@ const AdminLogin = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setError(''); // Reset error message before submitting
+    setError(''); 
     try {
       const userCredential = await signInWithEmailAndPassword(auth, email, password);
       const user = userCredential.user;
 
-      // Check if user is an admin
+      
       const userDoc = await getDoc(doc(db, 'users', user.uid));
       if (userDoc.exists() && userDoc.data().role === 'admin') {
-        navigate('/admin'); // Redirect to admin dashboard
+        navigate('/admin');
       } else {
         setError('You are not authorized to access the admin dashboard.');
       }

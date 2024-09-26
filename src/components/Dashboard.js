@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { collection, getDocs, doc, updateDoc } from 'firebase/firestore';
-import { db } from '../firebase'; // Firestore instance
+import { db } from '../firebase';
 
 const Dashboard = () => {
   const [rooms, setRooms] = useState([]);
