@@ -58,7 +58,7 @@ const AdminDashboard = () => {
               <img src="https://via.placeholder.com/100" alt="Room List Icon" />
               <h3>Room List</h3>
             </div>
-            <div onClick={() => navigate('/edit-room')} style={linkStyle}>
+            <div onClick={() => navigate('/dashboard')} style={linkStyle}>
               <img src="https://via.placeholder.com/100" alt="Edit Room Icon" />
               <h3>Edit Room</h3>
             </div>

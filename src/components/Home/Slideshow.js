@@ -8,8 +8,8 @@ import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 const Slideshow = () => {
   const [images, setImages] = useState([
     "", // Placeholder for uploaded images
-    "https://example.com/room2.jpg",
-    "https://example.com/room3.jpg",
+    "https://firebasestorage.googleapis.com/v0/b/hotel-app-688af.appspot.com/o/fernando-alvarez-rodriguez-M7GddPqJowg-unsplash.jpg?alt=media&token=d58b9b77-073e-412c-9e64-929ba115dc3c",
+    "https://firebasestorage.googleapis.com/v0/b/hotel-app-688af.appspot.com/o/jason-briscoe-76-58HpxvpQ-unsplash.jpg?alt=media&token=f663ce47-7bee-4359-88c4-9ac9935c0859",
   ]);
 
   const settings = {

@@ -9,10 +9,11 @@ const RoomCard = ({ room }) => {
   };
 
   return (
-    <div style={cardStyle}>
-      <img src={room.image} alt={room.name} style={imageStyle} />
+    <div style={{ margin: '10px', padding: '10px', border: '1px solid #ccc', width: '300px' }}>
+      <img src={room.image} alt={room.name} style={{ width: '100%', height: '200px', objectFit: 'cover' }} />
       <h3>{room.name}</h3>
       <button onClick={handleBooking}>Book Now</button>
+      {/* Add more room details as needed */}
     </div>
   );
 };

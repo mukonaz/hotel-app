@@ -24,7 +24,7 @@ const handleSubmit = async (e) => {
         if (userData.role === 'admin') {
           navigate('/admin');
         } else {
-          navigate('/dashboard'); 
+          navigate('/home'); 
         }
       }
     } catch (error) {
