@@ -1,54 +1,51 @@
-import React, { useEffect, useState } from 'react';
-import { auth, db } from '../firebase';
-import { collection, query, where, getDocs } from 'firebase/firestore';
+import { getAuth } from 'firebase/auth';
+import { getFirestore, doc, getDoc } from 'firebase/firestore';
+import { useEffect, useState } from 'react';
 
 const ProfilePage = () => {
-  const [bookedRooms, setBookedRooms] = useState([]);
+  const [userData, setUserData] = useState(null);
+  const [error, setError] = useState('');
+  const auth = getAuth();
+  const firestore = getFirestore();
+  const user = auth.currentUser;
 
   useEffect(() => {
-    const fetchBookedRooms = async () => {
-      const user = auth.currentUser;
-
+    const fetchUserData = async () => {
       if (user) {
-        const q = query(collection(db, 'bookings'), where('userId', '==', user.uid));
-        const querySnapshot = await getDocs(q);
-
-        const rooms = querySnapshot.docs.map(doc => doc.data());
-        setBookedRooms(rooms);
+        try {
+          const userDoc = await getDoc(doc(firestore, 'users', user.uid));
+          if (userDoc.exists()) {
+            setUserData(userDoc.data());
+          } else {
+            setError('User data not found');
+          }
+        } catch (err) {
+          setError('Failed to load user data: ' + err.message);
+        }
+      } else {
+        setError('User not authenticated');
       }
     };
 
-    fetchBookedRooms();
-  }, []);
+    fetchUserData();
+  }, [user, firestore]);
+
+  if (error) {
+    return <div>Error: {error}</div>;
+  }
+
+  if (!userData) {
+    return <div>Loading...</div>;
+  }
 
   return (
     <div>
-      <h1>Your Bookings</h1>
-      {bookedRooms.length > 0 ? (
-        bookedRooms.map((room, idx) => (
-          <div key={idx} style={cardStyle}>
-            <h3>{room.name}</h3>
-            <img src={room.image} alt={room.name} style={imageStyle} />
-          </div>
-        ))
-      ) : (
-        <p>You have no booked rooms.</p>
-      )}
+      <h2>Profile Page</h2>
+      <p><strong>User Name:</strong> {userData.displayName}</p>
+      <p><strong>Email:</strong> {userData.email}</p>
+      <img src={userData.photoURL} alt="Profile" width={150} />
     </div>
   );
-};
-
-const cardStyle = {
-  border: '1px solid #ccc',
-  padding: '10px',
-  margin: '10px',
-  textAlign: 'center',
-};
-
-const imageStyle = {
-  width: '100%',
-  height: '200px',
-  objectFit: 'cover',
 };
 
 export default ProfilePage;
