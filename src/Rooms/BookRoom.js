@@ -1,100 +1,112 @@
 import React, { useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
-import { db, auth } from '../firebase';
-import { collection, addDoc } from 'firebase/firestore';
+import { loadStripe } from '@stripe/stripe-js';
+import { Elements, CardElement, useStripe, useElements } from '@stripe/react-stripe-js';
+import { db } from '../firebase'; // Firebase setup
+import { useAuth } from '../authContext'; // Authentication context
 
-const BookRoom = () => {
-  const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    checkIn: '',
-    checkOut: '',
-    specialRequests: '',
-  });
+// Load Stripe with your publishable key
+const stripePromise = loadStripe(''); // Use your Stripe publishable key
 
-  const { roomId } = useParams();
-  const navigate = useNavigate();
+const BookRoomForm = ({ roomId, handleBookingSuccess }) => {
+  const stripe = useStripe();
+  const elements = useElements();
+  const [paymentProcessing, setPaymentProcessing] = useState(false);
 
-  const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
-  };
-
-  const handleSubmit = async (e) => {
+  const handlePaymentSubmit = async (e) => {
     e.preventDefault();
-
-    try {
-      const user = auth.currentUser;
-
-      if (!user) {
-        navigate('/login');
-        return;
-      }
-
-      await addDoc(collection(db, 'bookings'), {
-        ...formData,
-        roomId,
-        userId: user.uid,
-        timestamp: new Date(),
-      });
-
-      alert('Booking Successful!');
-      navigate('/profile'); // Redirect to profile page after booking
-    } catch (error) {
-      console.error('Error booking room:', error);
-      alert('Failed to book the room. Please try again.');
+    
+    // Check if Stripe has been initialized correctly
+    if (!stripe || !elements) {
+      return;
     }
+
+    setPaymentProcessing(true); // Set loading state
+
+    const { error, paymentMethod } = await stripe.createPaymentMethod({
+      type: 'card',
+      card: elements.getElement(CardElement),
+    });
+
+    if (!error) {
+      const { id } = paymentMethod;
+
+      try {
+        const res = await fetch('http://localhost:4242/create-payment-intent', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            amount: 5000, // Price in cents (e.g., $50.00)
+          }),
+        });
+
+        const { clientSecret } = await res.json();
+
+        const confirmPayment = await stripe.confirmCardPayment(clientSecret, {
+          payment_method: id,
+        });
+
+        if (confirmPayment.paymentIntent.status === 'succeeded') {
+          // Payment successful, now proceed with booking in Firebase
+          handleBookingSuccess();
+        } else {
+          alert('Payment failed');
+        }
+      } catch (error) {
+        console.error('Payment error:', error);
+        alert('Payment failed: ' + error.message);
+      }
+    } else {
+      console.error(error);
+      alert(error.message);
+    }
+
+    setPaymentProcessing(false); // Reset loading state
   };
 
   return (
-    <div style={{ padding: '20px' }}>
-      <h2>Book Your Room</h2>
-      <form onSubmit={handleSubmit} style={formStyle}>
-        <input
-          type="text"
-          name="name"
-          placeholder="Full Name"
-          value={formData.name}
-          onChange={handleChange}
-          required
-        />
-        <input
-          type="email"
-          name="email"
-          placeholder="Email"
-          value={formData.email}
-          onChange={handleChange}
-          required
-        />
-        <input
-          type="date"
-          name="checkIn"
-          value={formData.checkIn}
-          onChange={handleChange}
-          required
-        />
-        <input
-          type="date"
-          name="checkOut"
-          value={formData.checkOut}
-          onChange={handleChange}
-          required
-        />
-        <textarea
-          name="specialRequests"
-          placeholder="Special Requests"
-          value={formData.specialRequests}
-          onChange={handleChange}
-        />
-        <button type="submit">Book Now</button>
-      </form>
-    </div>
+    <form onSubmit={handlePaymentSubmit}>
+      <CardElement />
+      <button type="submit" disabled={!stripe || paymentProcessing}>
+        {paymentProcessing ? 'Processing...' : 'Pay & Book'}
+      </button>
+    </form>
   );
 };
 
-const formStyle = {
-  display: 'flex',
-  flexDirection: 'column',
-  gap: '10px',
+const BookRoom = ({ roomId }) => {
+  const { currentUser } = useAuth();
+  const [showPaymentForm, setShowPaymentForm] = useState(false); // Show/Hide payment form
+
+  const handleBookingSuccess = async () => {
+    // Add booking to Firestore after successful payment
+    try {
+      await db.collection('bookings').add({
+        roomId: roomId,
+        userId: currentUser.uid,
+        date: new Date(),
+      });
+      alert('Room booked successfully!');
+    } catch (error) {
+      console.error('Error booking room:', error);
+      alert('Error booking room: ' + error.message);
+    }
+  };
+
+  const handleBookNowClick = () => {
+    setShowPaymentForm(true); // Show payment form when "Book Now" is clicked
+  };
+
+  return (
+    <div>
+      {!showPaymentForm ? (
+        <button onClick={handleBookNowClick}>Book Now</button> // Trigger payment form
+      ) : (
+        <Elements stripe={stripePromise}>
+          <BookRoomForm roomId={roomId} handleBookingSuccess={handleBookingSuccess} />
+        </Elements>
+      )}
+    </div>
+  );
 };
 
 export default BookRoom;
