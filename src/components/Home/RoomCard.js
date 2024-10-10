@@ -1,34 +1,32 @@
+// src/components/RoomList.js
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 
-const RoomCard = ({ room }) => {
+
+const RoomList = ({room}) => {
   const navigate = useNavigate();
 
-  const handleBooking = () => {
-    navigate(`/book-room/${room.id}`);
+  const handleBooking = (roomId) => {
+    navigate(`/book-room/${roomId}`);
   };
 
+
+
   return (
-    <div style={{ margin: '10px', padding: '10px', border: '1px solid #ccc', width: '300px' }}>
-      <img src={room.image} alt={room.name} style={{ width: '100%', height: '200px', objectFit: 'cover' }} />
-      <h3>{room.name}</h3>
-      <button onClick={handleBooking}>Book Now</button>
-      {/* Add more room details as needed */}
+    <div className="container mx-auto px-4 py-6 grid grid-cols-1 sm:grid-cols-3 gap-6">
+        <div key={room.id} className="border border-gray-300 p-4 rounded shadow-md">
+          <img src={room.image} alt={room.name} className="w-full h-48 object-cover rounded-t" />
+          <h3 className="text-xl font-semibold mt-2">{room.name}</h3>
+          <p className="text-gray-700">{room.price}</p>
+          <button 
+            onClick={() => handleBooking(room.id)} 
+            className="bg-gold p-2 rounded text-white mt-4"
+          >
+            Book Now
+          </button>
+        </div>
     </div>
   );
 };
 
-const cardStyle = {
-  border: '1px solid #ccc',
-  padding: '10px',
-  margin: '10px',
-  textAlign: 'center',
-};
-
-const imageStyle = {
-  width: '100%',
-  height: '200px',
-  objectFit: 'cover',
-};
-
-export default RoomCard;
+export default RoomList;

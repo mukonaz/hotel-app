@@ -1,3 +1,4 @@
+// components/Hero.js
 import React, { useState } from 'react';
 import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
@@ -15,7 +16,7 @@ const Slideshow = () => {
   const settings = {
     dots: true,
     infinite: true,
-    speed: 500,
+    speed: 700,
     slidesToShow: 1,
     slidesToScroll: 1,
     autoplay: true,
@@ -34,17 +35,25 @@ const Slideshow = () => {
   };
 
   return (
-    <div style={{ width: '80%', margin: '0 auto', padding: '20px' }}>
-      <input type="file" accept="image/*" onChange={handleImageUpload} />
-      <Slider {...settings}>
+    <div className="relative">
+      <Slider {...settings} style={{ height: '600px' }}>
         {images.map((img, idx) => (
           img && ( // Only display images that have valid URLs
-            <div key={idx}>
-              <img src={img} alt={`Room ${idx}`} style={{ width: '100%', height: '400px', objectFit: 'cover' }} />
+            <div key={idx} style={{ height: '600px' }}> {/* Ensure the slide div has a fixed height */}
+              <img 
+                src={img} 
+                alt={`Room ${idx}`} 
+                className="w-full h-full object-cover" 
+                style={{ height: '600px', width: '1900px' }} // Set fixed width and height for images
+              />
             </div>
           )
         ))}
       </Slider>
+      <div className="absolute inset-0 flex flex-col justify-center items-center text-white bg-black bg-opacity-50">
+        <h1 className="text-4xl font-bold">Discover Extraordinary Comfort in Hotels</h1>
+      </div>
+      <input type="file" onChange={handleImageUpload} className="absolute top-4 right-4" />
     </div>
   );
 };

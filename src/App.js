@@ -9,6 +9,8 @@ import AdminLogin from './Admin/AdminLogin';
 import AddRoom from './Rooms/AddRoom';
 import RoomList from './Rooms/RoomList';
 import Home from './components/Home';
+import Hero from './components/Home/Hero';
+import RoomDetail from './components/Home/RoomDetail';
 import BookRoom from './Rooms/BookRoom';
 import ProfilePage from './components/ProfilePage';
 import PrivateRoute from './components/PrivateRoute';
@@ -28,6 +30,7 @@ function App() {
         <Route path="/admin-login" element={<AdminLogin />} />
         <Route path="/add-room" element={<AddRoom />} />
         <Route path="/room-list" element={<RoomList />} />
+        <Route path="/room-detail/:roomId" element={<RoomDetail />} />
         <Route path="/book-room/:roomId" element={<PrivateRoute element={BookRoom} />} />
         <Route path="/profile" element={<PrivateRoute element={ProfilePage} />} />
       </Routes>
