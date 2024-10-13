@@ -3,7 +3,7 @@ import {Link, useNavigate } from 'react-router-dom';
 import { getAuth, createUserWithEmailAndPassword, updateProfile } from 'firebase/auth';
 import { getFirestore, doc, setDoc } from 'firebase/firestore';
 import { getStorage, ref, uploadBytes, getDownloadURL } from 'firebase/storage';
-import { db, storage } from '../firebase'; // Ensure your Firebase config is imported
+import { db, storage } from '../firebase';
 
 const Form = () => {
   const [userName, setUserName] = useState('');
@@ -19,11 +19,10 @@ const Form = () => {
     setError('');
 
     try {
-      // Create user with email and password
+     
       const userCredential = await createUserWithEmailAndPassword(auth, email, password);
       const user = userCredential.user;
 
-      // Upload profile picture to Firebase Storage
       let avatarUrl = '';
       if (avatar) {
         const avatarRef = ref(storage, `avatars/${user.uid}`);
@@ -31,13 +30,12 @@ const Form = () => {
         avatarUrl = await getDownloadURL(avatarRef);
       }
 
-      // Update the user's profile with their display name and profile picture
       await updateProfile(user, {
         displayName: userName,
         photoURL: avatarUrl,
       });
 
-      // Save user data in Firestore
+
       await setDoc(doc(firestore, 'users', user.uid), {
         uid: user.uid,
         email: user.email,
@@ -45,7 +43,6 @@ const Form = () => {
         photoURL: avatarUrl,
       });
 
-      // Handle successful registration (e.g., navigate to profile page)
       console.log('User registered successfully');
     } catch (err) {
       setError('Failed to create account: ' + err.message);

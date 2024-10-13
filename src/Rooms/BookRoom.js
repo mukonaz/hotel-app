@@ -1,11 +1,10 @@
-// BookRoom.js
 import React, { useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { db, auth } from '../firebase';
-import { collection, addDoc } from 'firebase/firestore';
-import Navbar from '../components/Home/NavBar'; // Adjust path as necessary
-import Hero from '../components/Home/Hero'; // Adjust path as necessary
-import LuxuriousRooms from '../components/Home/LuxuriousRooms'; // Adjust path as necessary
+import { collection, addDoc, doc, getDoc } from 'firebase/firestore';
+import Navbar from '../components/Home/NavBar';
+import Hero from '../components/Home/Hero';
+import LuxuriousRooms from '../components/Home/LuxuriousRooms';
 
 const BookRoom = () => {
   const [formData, setFormData] = useState({
@@ -28,21 +27,34 @@ const BookRoom = () => {
 
     try {
       const user = auth.currentUser;
-
       if (!user) {
         navigate('/login');
         return;
       }
 
+      const roomDoc = await getDoc(doc(db, 'rooms', roomId));
+      if (!roomDoc.exists()) {
+        alert('Room not found.');
+        return;
+      }
+      const roomData = roomDoc.data();
+      const roomPrice = roomData.price;
+
+      const checkInDate = new Date(formData.checkIn);
+      const checkOutDate = new Date(formData.checkOut);
+      const days = Math.ceil((checkOutDate - checkInDate) / (1000 * 60 * 60 * 24));
+
+      const totalPrice = roomPrice * days;
+
       await addDoc(collection(db, 'bookings'), {
         ...formData,
         roomId,
         userId: user.uid,
+        totalPrice,
         timestamp: new Date(),
       });
 
-      alert('Booking Successful!');
-      navigate('/profile'); // Redirect to profile page after booking
+      navigate('/payment', { state: { totalPrice, roomName: roomData.name } });
     } catch (error) {
       console.error('Error booking room:', error);
       alert('Failed to book the room. Please try again.');
@@ -101,15 +113,9 @@ const BookRoom = () => {
           </button>
         </div>
       </div>
-      <LuxuriousRooms /> {/* Move this component to the end */}
+      <LuxuriousRooms />
     </div>
   );
-};
-
-const formStyle = {
-  display: 'flex',
-  flexDirection: 'column',
-  gap: '10px',
 };
 
 export default BookRoom;

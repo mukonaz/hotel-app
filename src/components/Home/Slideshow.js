@@ -1,14 +1,13 @@
-// components/Hero.js
 import React, { useState } from 'react';
 import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
-import { storage } from '../../firebase'; // Adjust the path if needed
+import { storage } from '../../firebase';
 import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 
 const Slideshow = () => {
   const [images, setImages] = useState([
-    "", // Placeholder for uploaded images
+    "",
     "https://firebasestorage.googleapis.com/v0/b/hotel-app-688af.appspot.com/o/fernando-alvarez-rodriguez-M7GddPqJowg-unsplash.jpg?alt=media&token=d58b9b77-073e-412c-9e64-929ba115dc3c",
     "https://firebasestorage.googleapis.com/v0/b/hotel-app-688af.appspot.com/o/jason-briscoe-76-58HpxvpQ-unsplash.jpg?alt=media&token=f663ce47-7bee-4359-88c4-9ac9935c0859",
   ]);
@@ -30,7 +29,7 @@ const Slideshow = () => {
     await uploadBytes(storageRef, file);
     const downloadURL = await getDownloadURL(storageRef);
 
-    // Update images state to include the newly uploaded image URL
+    
     setImages((prevImages) => [...prevImages, downloadURL]);
   };
 
@@ -38,13 +37,13 @@ const Slideshow = () => {
     <div className="relative">
       <Slider {...settings} style={{ height: '600px' }}>
         {images.map((img, idx) => (
-          img && ( // Only display images that have valid URLs
-            <div key={idx} style={{ height: '600px' }}> {/* Ensure the slide div has a fixed height */}
+          img && (
+            <div key={idx} style={{ height: '600px' }}> 
               <img 
                 src={img} 
                 alt={`Room ${idx}`} 
                 className="w-full h-full object-cover" 
-                style={{ height: '600px', width: '1900px' }} // Set fixed width and height for images
+                style={{ height: '600px', width: '1900px' }}
               />
             </div>
           )

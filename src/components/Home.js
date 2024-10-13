@@ -4,16 +4,16 @@ import Slideshow from './Home/Slideshow';
 import RoomSearch from './Home/RoomSearch';
 import RoomCard from './Home/RoomCard';
 import { collection, getDocs } from 'firebase/firestore';
-import { db } from '../firebase'; // Ensure you have a Firebase setup with Firestore
+import { db } from '../firebase'; 
 
 const HomePage = () => {
   const [rooms, setRooms] = useState([]);
 
-  // Fetch rooms from Firebase Firestore
+ 
   useEffect(() => {
     const fetchRooms = async () => {
       try {
-        const roomCollection = collection(db, 'rooms'); // Adjust 'rooms' to your Firestore collection name
+        const roomCollection = collection(db, 'rooms');
         const roomSnapshot = await getDocs(roomCollection);
         const roomList = roomSnapshot.docs.map(doc => ({
           id: doc.id,

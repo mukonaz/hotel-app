@@ -1,17 +1,15 @@
-// components/LuxuriousRooms.js
 import React, { useEffect, useState } from 'react';
-import { db } from '../../firebase';// Ensure this path is correct
+import { db } from '../../firebase';
 import { collection, getDocs } from 'firebase/firestore';
 import RoomList from './RoomCard';
 
 const LuxuriousRooms = () => {
   const [rooms, setRooms] = useState([]);
 
-  // Fetch rooms from Firestore
   useEffect(() => {
     const fetchRooms = async () => {
       try {
-        const roomCollection = collection(db, 'rooms'); // Adjust to your Firestore collection
+        const roomCollection = collection(db, 'rooms');
         const roomSnapshot = await getDocs(roomCollection);
         const roomList = roomSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
         setRooms(roomList);

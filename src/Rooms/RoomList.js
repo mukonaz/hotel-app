@@ -114,7 +114,6 @@ const RoomList = () => {
         </div>
       )}
 
-      {/* Delete Confirmation Popup */}
       {showDeletePopup && (
         <div style={popupStyle}>
           <p>Are you sure you want to delete this room?</p>
