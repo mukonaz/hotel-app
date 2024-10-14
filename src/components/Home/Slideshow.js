@@ -52,7 +52,6 @@ const Slideshow = () => {
       <div className="absolute inset-0 flex flex-col justify-center items-center text-white bg-black bg-opacity-50">
         <h1 className="text-4xl font-bold">Discover Extraordinary Comfort in Hotels</h1>
       </div>
-      <input type="file" onChange={handleImageUpload} className="absolute top-4 right-4" />
     </div>
   );
 };
