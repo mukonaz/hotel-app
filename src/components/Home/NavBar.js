@@ -20,7 +20,7 @@ const Navbar = () => {
           {!user ? (
             <li><Link to="/login" className="hover:text-gray-500">Login</Link></li>
           ) : (
-            <li><Link to="/register" className="hover:text-gray-500">Logout</Link></li>
+            <li><Link to="/home" className="hover:text-gray-500">Logout</Link></li>
           )}
         </ul>
       </div>
