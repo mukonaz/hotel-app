@@ -69,7 +69,7 @@ const RoomList = () => {
         ) : (
           rooms.map((room) => (
             <div key={room.id} className="bg-brown-500 text- rounded-lg flex items-center mb-4 p-4 shadow-md">
-              <img src={room.image} alt={room.roomName}  className="w-16 h-16 rounded-full object-cover mr-4" />
+              <img src={room.image} alt={room.roomName}  className="w-16 h-16  object-cover mr-4" />
               <div className="flex-1">
               <h3 className="font-bold">{room.roomName}</h3>
               <p>Price:R {room.price}</p>
