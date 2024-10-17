@@ -4,11 +4,12 @@ import { collection, addDoc } from 'firebase/firestore';
 import { db } from '../firebase';
 
 const AddRoom = () => {
+  const [roomtype, setRoomType] = useState('');
   const [roomName, setRoomName] = useState('');
   const [price, setPrice] = useState('');
   const [description, setDescription] = useState('');
-  const [image, setImage] = useState(null); 
-  const [base64Image, setBase64Image] = useState(''); 
+  const [image, setImage] = useState(null);
+  const [base64Image, setBase64Image] = useState('');
   const [showPopup, setShowPopup] = useState(false);
 
   const navigate = useNavigate();
@@ -19,7 +20,7 @@ const AddRoom = () => {
 
     const reader = new FileReader();
     reader.onloadend = () => {
-      setBase64Image(reader.result); 
+      setBase64Image(reader.result);
     };
     reader.readAsDataURL(file);
   };
@@ -29,13 +30,14 @@ const AddRoom = () => {
 
     try {
       await addDoc(collection(db, 'rooms'), {
+        roomtype,
         roomName,
         price,
         description,
         image: base64Image,
       });
 
-     
+
       setShowPopup(true);
     } catch (error) {
       console.error('Error adding room:', error);
@@ -44,47 +46,76 @@ const AddRoom = () => {
 
   return (
     <div style={{ padding: '20px' }}>
-      <h2>Add a New Room</h2>
-      <form onSubmit={handleAddRoom}>
-        <div>
-          <label>Room Name:</label>
+      
+      <form onSubmit={handleAddRoom} className="bg-gray-50 w-full max-w-lg p-6 rounded-b-lg shadow-md">
+        <h2 className='mt-4 text-center'>Add a New Room</h2>
+        <div className="mb-4">
+          <label className="block font-semibold mb-1">Room Type</label>
+          <select
+            value={roomtype}
+            onChange={(e) => setRoomType(e.target.value)}
+            className="w-full p-2 bg-brown-600 text- rounded"
+          >
+            <option value="">Select room type</option>
+            <option value="Single">Single</option>
+            <option value="Double">Double</option>
+            <option value="Suite">Suite</option>
+          </select>
+        </div>
+        <div className="mb-4">
+          <label className="block font-semibold mb-1">Room Name:</label>
           <input
             type="text"
             value={roomName}
             onChange={(e) => setRoomName(e.target.value)}
             required
+            placeholder="Enter Room Name"
+            className="w-full p-2 border rounded"
           />
         </div>
-        <div>
-          <label>Price:</label>
+        <div className="mb-4">
+          <label className="block font-semibold mb-1">Price:</label>
           <input
-            type="number"
+            type="text"
             value={price}
             onChange={(e) => setPrice(e.target.value)}
             required
+            placeholder="Type here Amount"
+            className="w-full p-2 border rounded"
           />
         </div>
+
         <div>
-          <label>Description:</label>
+          <label className="block font-semibold mb-1">Description:</label>
           <textarea
             value={description}
             onChange={(e) => setDescription(e.target.value)}
             required
+            className="w-full p-2 border rounded"
           />
         </div>
-        <div>
-          <label>Image:</label>
-          <input
-            type="file"
-            accept="image/*"
-            onChange={handleImageChange} 
-            required
-          />
+        <div className="mb-4">
+          <label className="block font-semibold mb-1">Upload Room Image</label>
+          <div className="flex items-center">
+            <input
+              type="file"
+              accept="image/*"
+              onChange={handleImageChange}
+              required
+              className="w-full p-2 border rounded"
+            />
+          </div>
         </div>
-        <button type="submit">Add Room</button>
+        <div className="mt-6 text-center">
+          <button type="submit"
+            className="bg-gold text-white py-2 px-6 rounded-full font-bold"
+          >
+            Add Room
+          </button>
+        </div>
       </form>
 
-      <button onClick={() => navigate('/admin')} style={{ marginTop: '10px' }}>Back</button>
+      <button onClick={() => navigate('/admin')} className="bg-gold text-white py-2 px-6 rounded-full font-bold" style={{ marginTop: '20px' }}>Back</button>
 
       {showPopup && (
         <div style={popupStyle}>

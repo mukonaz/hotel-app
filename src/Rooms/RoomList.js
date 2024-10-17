@@ -63,18 +63,22 @@ const RoomList = () => {
   return (
     <div>
       <h2>Room List</h2>
-      <div style={{ display: 'flex', flexWrap: 'wrap', gap: '20px' }}>
+      <div  >
         {rooms.length === 0 ? (
           <p>No rooms available</p>
         ) : (
           rooms.map((room) => (
-            <div key={room.id} style={roomCardStyle}>
-              <img src={room.image} alt={room.roomName} style={imageStyle} />
-              <h3>{room.roomName}</h3>
-              <p>Price: {room.price}</p>
+            <div key={room.id} className="bg-brown-500 text- rounded-lg flex items-center mb-4 p-4 shadow-md">
+              <img src={room.image} alt={room.roomName}  className="w-16 h-16 rounded-full object-cover mr-4" />
+              <div className="flex-1">
+              <h3 className="font-bold">{room.roomName}</h3>
+              <p>Price:R {room.price}</p>
               <p>{room.description}</p>
-              <button onClick={() => setRoomToDelete(room) || setShowDeletePopup(true)}>Delete</button>
-              <button onClick={() => handleEdit(room)}>Edit</button>
+              </div>
+              <div className="flex space-x-2">
+              <button onClick={() => setRoomToDelete(room) || setShowDeletePopup(true)} className="bg-gold p-2 rounded-full">Delete</button>
+              <button onClick={() => handleEdit(room)} className="bg-gold p-2 rounded-full">Edit</button>
+              </div>
             </div>
           ))
         )}

@@ -52,10 +52,10 @@ const AdminRegister = () => {
                         <div className="xl:mx-auto shadow-md p-4 xl:w-full xl:max-w-sm 2xl:max-w-md">
                             <div className="mb-2" />
                             <h2 className="text-2xl font-bold leading-tight">
-                                Sign up to create account
+                                Add New Admin
                             </h2>
                             <p className="mt-2 text-base text-gray-600">
-                                Don't have an account? <Link to="/admin-login">Sign Up</Link>
+                                Have an account? <Link to="/admin-login">Login</Link>
                             </p>
                             <div className="mt-5 space-y-4">
                                 <div>
@@ -141,7 +141,7 @@ const AdminRegister = () => {
                                 </div>
                                 <div>
                                     <button
-                                        className="inline-flex w-full items-center justify-center rounded-md bg-black px-3.5 py-2.5 font-semibold leading-7 text-white hover:bg-black/80"
+                                        className="inline-flex w-full items-center justify-center rounded-md bg-gold px-3.5 py-2.5 font-semibold leading-7 text-white hover:bg-black/80"
                                         type="submit"
                                     >
                                         Create Account

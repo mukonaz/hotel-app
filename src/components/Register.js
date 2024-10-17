@@ -108,11 +108,11 @@ const Form = () => {
                 </div>
                 <button
                   type="submit"
-                  className="w-full bg-black text-white py-2 rounded-md"
+                  className="w-full bg-gold text-white py-2 rounded-md"
                 >
                   Create Account
                 </button>
-                <p>Don't have an account? <Link to="/login" >Sign Up</Link>  </p>
+                <p>Have an account? <Link to="/login" >Login..</Link>  </p>
               </div>
             </form>
             {error && <p className="text-red-500 mt-3">{error}</p>}

@@ -59,11 +59,11 @@ const AdminLogin = () => {
           </div>
           <button
             type="submit"
-            className="w-full bg-indigo-600 text-white py-2 rounded-md hover:bg-indigo-700 transition duration-150"
+            className="w-full bg-gold text-white py-2 rounded-md hover:bg-gold-700 transition duration-150"
           >
             Login
           </button>
-          <p>I have an account? <Link to="/admin-register" >Sign Up</Link>  </p>
+          <p>Don't have an account? <Link to="/admin-register" >Sign Up</Link>  </p>
         </form>
       </div>
     </div>

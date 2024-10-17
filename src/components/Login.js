@@ -32,9 +32,9 @@ const handleSubmit = async (e) => {
   };
 
     return (
-    <div className="flex flex-col items-center justify-center h-screen dark">
-      <div className="w-full max-w-md bg-gray-800 rounded-lg shadow-md p-6">
-        <h2 className="text-2xl font-bold text-gray-200 mb-4">Login</h2>
+    <div className="flex flex-col items-center justify-center h-screen ">
+      <div className="w-full max-w-md bg--800 rounded-lg shadow-md p-6">
+        <h2 className="text-2xl font-bold text-gray-800 mb-4">Login</h2>
         <form className="flex flex-col" onSubmit={handleSubmit}>
           <input
             placeholder="Email address"
@@ -50,13 +50,6 @@ const handleSubmit = async (e) => {
             
           />
           <div className="flex items-center justify-between flex-wrap">
-            <label
-              className="text-sm text-gray-200 cursor-pointer"
-              htmlFor="remember-me"
-            >
-              <input className="mr-2" id="remember-me" type="checkbox" />
-              Remember me
-            </label>
             <a
               className="text-sm text-blue-500 hover:underline mb-0.5"
               href="#"
@@ -68,14 +61,14 @@ const handleSubmit = async (e) => {
               Don&apos;t have an account?{" "}
               <a
                 className="text-sm text-blue-500 -200 hover:underline mt-4"
-                href="#"
+                href="/register"
               >
                 <p>Don't have an account? <Link to="/register" >Sign Up</Link>  </p>
               </a>
             </p>
           </div>
           <button
-            className="bg-gradient-to-r from-indigo-500 to-blue-500 text-white font-bold py-2 px-4 rounded-md mt-4 hover:bg-indigo-600 hover:to-blue-600 transition ease-in-out duration-150"
+            className="bg-gold to-gold-500 text-white font-bold py-2 px-4 rounded-md mt-4 hover:bg-gold-600 hover:to-gold-600 transition ease-in-out duration-150"
             type="submit"
           >
             Login
