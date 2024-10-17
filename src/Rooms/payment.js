@@ -35,8 +35,8 @@ const PaymentForm = () => {
     <div className="flex justify-center items-center min-h-screen bg-gray-100">
       <div className="bg-white p-6 rounded-lg shadow-md w-80">
         <h2 className="text-2xl font-semibold mb-4">Complete Your Booking</h2>
-        <p className="mb-2 text-gray-700">Room: <span className="font-medium">{roomName}</span></p>
-        <p className="mb-4 text-gray-700">Total Price: <span className="font-medium">${totalPrice}</span></p>
+        <p className="mb-2 text-gray-700">Room Name: <span className="font-medium">{roomName}</span></p>
+        <p className="mb-4 text-gray-700">Total Price: <span className="font-medium">R{totalPrice}</span></p>
         <form onSubmit={handlePayment}>
           <div className="mb-4 border rounded-lg p-3">
             <CardElement 
@@ -56,7 +56,7 @@ const PaymentForm = () => {
             disabled={!stripe} 
             className="w-full bg-black text-white py-2 rounded-lg mt-4 hover:bg-gray-800 transition duration-300"
           >
-            Pay ${totalPrice}
+            Pay R{totalPrice}
           </button>
         </form>
       </div>

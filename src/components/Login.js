@@ -32,8 +32,8 @@ const handleSubmit = async (e) => {
   };
 
     return (
-    <div className="flex flex-col items-center justify-center h-screen ">
-      <div className="w-full max-w-md bg--800 rounded-lg shadow-md p-6">
+    <div className="bg-slate-300 flex flex-col items-center justify-center h-screen ">
+      <div className="w-full max-w-md bg-white rounded-lg shadow-md p-6">
         <h2 className="text-2xl font-bold text-gray-800 mb-4">Login</h2>
         <form className="flex flex-col" onSubmit={handleSubmit}>
           <input
@@ -50,15 +50,8 @@ const handleSubmit = async (e) => {
             
           />
           <div className="flex items-center justify-between flex-wrap">
-            <a
-              className="text-sm text-blue-500 hover:underline mb-0.5"
-              href="#"
-            >
-              Forgot password?
-            </a>
+        
             <p className="text-white mt-4">
-              {" "}
-              Don&apos;t have an account?{" "}
               <a
                 className="text-sm text-blue-500 -200 hover:underline mt-4"
                 href="/register"

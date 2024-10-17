@@ -51,9 +51,9 @@ const Form = () => {
 
   return (
     <div className="">
-      <section className="rounded-md p-2 bg-white">
-        <div className="flex items-center justify-center my-3">
-          <div className="xl:mx-auto shadow-md p-4 xl:w-full xl:max-w-sm 2xl:max-w-md">
+      <section className="rounded-md p-2 bg-slate-300 py-64">
+        <div className=" flex items-center justify-center my-3">
+          <div className="bg-white rounded-lg xl:mx-auto shadow-md p-4 xl:w-full xl:max-w-sm 2xl:max-w-md">
             <h2 className="text-2xl font-bold leading-tight">
               Sign up to create account
             </h2>
@@ -112,7 +112,8 @@ const Form = () => {
                 >
                   Create Account
                 </button>
-                <p>Have an account? <Link to="/login" >Login..</Link>  </p>
+                <p><a className="text-sm text-blue-500 -200 hover:underline mt-4"><p>Have an account? <Link to="/login" >Login..</Link>  </p></a></p>
+                
               </div>
             </form>
             {error && <p className="text-red-500 mt-3">{error}</p>}

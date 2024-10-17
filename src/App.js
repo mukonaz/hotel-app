@@ -11,6 +11,7 @@ import AdminLogin from './Admin/AdminLogin';
 import AddRoom from './Rooms/AddRoom';
 import RoomList from './Rooms/RoomList';
 import Home from './components/Home';
+import AboutUs from './components/About';
 import Hero from './components/Home/Hero';
 import RoomDetail from './components/Home/RoomDetail';
 import BookRoom from './Rooms/BookRoom';
@@ -31,6 +32,7 @@ function App() {
         <Route path="/register" element={<Register />} />
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/home" element={<Home />} />
+        <Route path='/about' element={<AboutUs/>} />
         <Route path="/admin" element={<ProtectedRoute><AdminDashboard /></ProtectedRoute>} />
         <Route path="/admin-register" element={<AdminRegister />} />
         <Route path="/admin-login" element={<AdminLogin />} />

@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { getAuth } from 'firebase/auth';
-import { getFirestore, doc, getDoc } from 'firebase/firestore';
+import { getFirestore, doc, getDoc, updateDoc, deleteField } from 'firebase/firestore';
 
 const ProfilePage = () => {
   const [userData, setUserData] = useState(null);
+  const [bookedRoom, setBookedRoom] = useState(null);
   const [error, setError] = useState('');
   const navigate = useNavigate();
   const auth = getAuth();
@@ -17,7 +18,18 @@ const ProfilePage = () => {
         try {
           const userDoc = await getDoc(doc(firestore, 'users', user.uid));
           if (userDoc.exists()) {
-            setUserData(userDoc.data());
+            const data = userDoc.data();
+            setUserData(data);
+
+            // Fetch the booked room details if there's a booking
+            if (data.bookingsId) {
+              const roomDoc = await getDoc(doc(firestore, 'rooms', data.bookingsId));
+              if (roomDoc.exists()) {
+                setBookedRoom(roomDoc.data());
+              } else {
+                console.log('No such room document!');
+              }
+            }
           } else {
             setError('User data not found');
           }
@@ -31,6 +43,21 @@ const ProfilePage = () => {
 
     fetchUserData();
   }, [user, firestore]);
+
+  const handleCancelBooking = async () => {
+    try {
+      await updateDoc(doc(firestore, 'users', user.uid), {
+        bookedRoomId: deleteField()
+      });
+      setBookedRoom(null); // Update UI after successful cancellation
+    } catch (err) {
+      setError('Failed to cancel booking: ' + err.message);
+    }
+  };
+
+  const handleEditProfile = () => {
+    navigate('/edit-profile'); // Replace with your actual route to edit profile page
+  };
 
   if (error) {
     return <div className="text-center text-red-500">{error}</div>;
@@ -63,18 +90,33 @@ const ProfilePage = () => {
             <span className="font-semibold">Email :</span>
             <span className="ml-2">{userData.email}</span>
           </div>
-          <h3 className="font-semibold text-lg mb-2 text-center">Bookings</h3>
-        </div>
-      </div>
+          <button 
+            onClick={handleEditProfile}
+            className="bg-blue-500 text-white p-2 rounded mt-4"
+          >
+            Edit Profile
+          </button>
 
-      <div className="mt-8 text-center">
-        <h3 className="text-lg font-semibold">Big Offer for you!</h3>
-        <div className="mt-2">
-          <img 
-            src="https://firebasestorage.googleapis.com/v0/b/hotel-app-688af.appspot.com/o/valeriia-bugaiova-_pPHgeHz1uk-unsplash.jpg?alt=media&token=c7b9b21d-07cf-4a63-ba7b-6a5fa8023590" // Replace with actual image URL or base64
-            alt="Big Offer" 
-            className="w-full rounded-lg shadow-md object-cover"
-          />
+          <h3 className="font-semibold text-lg mb-2 text-center">Bookings</h3>
+          {bookedRoom ? (
+            <div className="border border-gray-300 p-4 rounded mb-4">
+              <h4 className="font-semibold">{bookedRoom.name}</h4>
+              <img 
+                src={bookedRoom.image} 
+                alt={bookedRoom.name} 
+                className="w-full h-32 object-cover rounded mb-2" 
+              />
+              <p>{bookedRoom.features}</p>
+              <button 
+                onClick={handleCancelBooking}
+                className="bg-red-500 text-white p-2 rounded mt-4"
+              >
+                Cancel Booking
+              </button>
+            </div>
+          ) : (
+            <p className="text-center">No current bookings</p>
+          )}
         </div>
       </div>
     </div>

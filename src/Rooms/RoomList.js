@@ -72,7 +72,10 @@ const RoomList = () => {
               <img src={room.image} alt={room.roomName}  className="w-16 h-16  object-cover mr-4" />
               <div className="flex-1">
               <h3 className="font-bold">{room.roomName}</h3>
+              <h4 className="font-bold">{room.roomtype}</h4>
               <p>Price:R {room.price}</p>
+              <p>Adult: {room.adult}</p>
+              <p>Children: {room.children}</p>
               <p>{room.description}</p>
               </div>
               <div className="flex space-x-2">

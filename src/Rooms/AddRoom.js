@@ -7,6 +7,8 @@ const AddRoom = () => {
   const [roomtype, setRoomType] = useState('');
   const [roomName, setRoomName] = useState('');
   const [price, setPrice] = useState('');
+  const [adult, setAdult] = useState('');
+  const [children, setChildren] = useState('');
   const [description, setDescription] = useState('');
   const [image, setImage] = useState(null);
   const [base64Image, setBase64Image] = useState('');
@@ -33,6 +35,8 @@ const AddRoom = () => {
         roomtype,
         roomName,
         price,
+        adult,
+        children,
         description,
         image: base64Image,
       });
@@ -57,9 +61,8 @@ const AddRoom = () => {
             className="w-full p-2 bg-brown-600 text- rounded"
           >
             <option value="">Select room type</option>
-            <option value="Single">Single</option>
-            <option value="Double">Double</option>
-            <option value="Suite">Suite</option>
+            <option value="Standard">Standard</option>
+            <option value="Luxury">Luxury</option>
           </select>
         </div>
         <div className="mb-4">
@@ -84,7 +87,23 @@ const AddRoom = () => {
             className="w-full p-2 border rounded"
           />
         </div>
-
+        <div className="mb-4">
+          <label className="block font-semibold mb-1">Adult</label>
+          <input
+            value={adult}
+            onChange={(e) => setAdult(e.target.value)}
+            className="w-full p-2 bg-brown-600 text- rounded"
+          />
+            
+        </div>
+        <div className="mb-4">
+          <label className="block font-semibold mb-1">Children</label>
+          <input
+            value={children}
+            onChange={(e) => setChildren(e.target.value)}
+            className="w-full p-2 bg-brown-600 text- rounded"
+          />
+        </div>
         <div>
           <label className="block font-semibold mb-1">Description:</label>
           <textarea
