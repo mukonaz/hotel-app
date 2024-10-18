@@ -132,20 +132,6 @@ const RoomList = () => {
   );
 };
 
-const roomCardStyle = {
-  border: '1px solid #ddd',
-  borderRadius: '8px',
-  padding: '15px',
-  width: '250px',
-  textAlign: 'center',
-};
-
-const imageStyle = {
-  width: '100%',
-  height: '150px',
-  objectFit: 'cover',
-};
-
 const popupStyle = {
   position: 'fixed',
   top: '50%',
