@@ -67,47 +67,15 @@ const BookRoom = () => {
       <Hero />
       <div className="bg-white py-4 shadow-lg">
         <div className="container mx-auto flex flex-col sm:flex-row gap-4 justify-between items-center px-4">
-          <input
-            type="text"
-            name="name"
-            placeholder="Full Name"
-            value={formData.name}
-            onChange={handleChange}
-            required
-            className="p-2 border border-gray-300 rounded w-full sm:w-auto"
-          />
-          <input
-            type="email"
-            name="email"
-            placeholder="Email"
-            value={formData.email}
-            onChange={handleChange}
-            required
-            className="p-2 border border-gray-300 rounded w-full sm:w-auto"
-          />
-          <input
-            type="date"
-            name="checkIn"
-            value={formData.checkIn}
-            onChange={handleChange}
-            required
-            className="p-2 border border-gray-300 rounded w-full sm:w-auto"
-          />
-          <input
-            type="date"
-            name="checkOut"
-            value={formData.checkOut}
-            onChange={handleChange}
-            required
-            className="p-2 border border-gray-300 rounded w-full sm:w-auto"
-          />
-          <textarea
-            name="specialRequests"
-            placeholder="Special Requests"
-            value={formData.specialRequests}
-            onChange={handleChange}
-            className="p-2 border border-gray-300 rounded w-full sm:w-auto"
-          />
+          <input type="text" name="name" placeholder="Full Name" value={formData.name} onChange={handleChange} required className="p-2 border border-gray-300 rounded w-full sm:w-auto" />
+          
+          <input type="email" name="email" placeholder="Email" value={formData.email} onChange={handleChange} required className="p-2 border border-gray-300 rounded w-full sm:w-auto" />
+          
+          <input type="date" name="checkIn" value={formData.checkIn} onChange={handleChange} required className="p-2 border border-gray-300 rounded w-full sm:w-auto" />
+          
+          <input type="date" name="checkOut" value={formData.checkOut} onChange={handleChange} required className="p-2 border border-gray-300 rounded w-full sm:w-auto" />
+          
+          <textarea name="specialRequests" placeholder="Special Requests" value={formData.specialRequests} onChange={handleChange} className="p-2 border border-gray-300 rounded w-full sm:w-auto" />
           <button type="submit" onClick={handleSubmit} className="bg-gold p-2 rounded text-white w-full sm:w-auto">
             Book Now
           </button>

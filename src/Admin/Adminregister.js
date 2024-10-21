@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
 import { setDoc, doc } from 'firebase/firestore';
-import { auth, db } from '../firebase'; // Import Firebase auth and Firestore
+import { auth, db } from '../firebase';
 
 const AdminRegister = () => {
     const [name, setName] = useState('');
@@ -13,12 +13,11 @@ const AdminRegister = () => {
     const [error, setError] = useState('');
     const navigate = useNavigate();
 
-    // Handle file upload and convert to base64
     const handlePictureUpload = (e) => {
         const file = e.target.files[0];
         const reader = new FileReader();
         reader.onloadend = () => {
-            setPicture(reader.result); // Base64-encoded image
+            setPicture(reader.result);
         };
         reader.readAsDataURL(file);
     };
@@ -34,7 +33,7 @@ const AdminRegister = () => {
                 surname,
                 email,
                 role: 'admin',
-                picture, 
+                picture,
             });
 
             navigate('/admin-login');

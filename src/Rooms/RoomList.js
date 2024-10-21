@@ -89,33 +89,21 @@ const RoomList = () => {
 
       <button onClick={() => navigate('/admin')} style={{ marginTop: '10px' }}>Back</button>
 
-      {/* Edit Room Popup */}
       {showEditPopup && (
         <div style={popupStyle}>
           <h3>Edit Room</h3>
           <label>Room Name:</label>
-          <input
-            type="text"
-            value={editingRoom.roomName}
-            onChange={(e) => setEditingRoom({ ...editingRoom, roomName: e.target.value })}
-          />
+          <input type="text" value={editingRoom.roomName} onChange={(e) => setEditingRoom({ ...editingRoom, roomName: e.target.value })} />
+          
           <label>Price:</label>
-          <input
-            type="number"
-            value={editingRoom.price}
-            onChange={(e) => setEditingRoom({ ...editingRoom, price: e.target.value })}
-          />
+          <input type="number" value={editingRoom.price} onChange={(e) => setEditingRoom({ ...editingRoom, price: e.target.value })} />
+          
           <label>Description:</label>
-          <textarea
-            value={editingRoom.description}
-            onChange={(e) => setEditingRoom({ ...editingRoom, description: e.target.value })}
-          />
+          <textarea value={editingRoom.description} onChange={(e) => setEditingRoom({ ...editingRoom, description: e.target.value })} />
+
           <label>Image URL:</label>
-          <input
-            type="text"
-            value={editingRoom.image}
-            onChange={(e) => setEditingRoom({ ...editingRoom, image: e.target.value })}
-          />
+          <input type="text" value={editingRoom.image} onChange={(e) => setEditingRoom({ ...editingRoom, image: e.target.value })} />
+
           <button onClick={handleUpdateRoom}>Save</button>
           <button onClick={() => setShowEditPopup(false)}>Cancel</button>
         </div>

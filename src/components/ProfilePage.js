@@ -21,7 +21,7 @@ const ProfilePage = () => {
             const data = userDoc.data();
             setUserData(data);
 
-            // Fetch the booked room details if there's a booking
+            
             if (data.bookingsId) {
               const roomDoc = await getDoc(doc(firestore, 'rooms', data.bookingsId));
               if (roomDoc.exists()) {
@@ -49,14 +49,14 @@ const ProfilePage = () => {
       await updateDoc(doc(firestore, 'users', user.uid), {
         bookedRoomId: deleteField()
       });
-      setBookedRoom(null); // Update UI after successful cancellation
+      setBookedRoom(null); 
     } catch (err) {
       setError('Failed to cancel booking: ' + err.message);
     }
   };
 
   const handleEditProfile = () => {
-    navigate('/edit-profile'); // Replace with your actual route to edit profile page
+    navigate('/edit-profile'); 
   };
 
   if (error) {

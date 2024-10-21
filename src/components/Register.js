@@ -63,53 +63,27 @@ const Form = () => {
                   <label className="text-base font-medium text-gray-900">
                     User Name
                   </label>
-                  <input
-                    type="text"
-                    value={userName}
-                    onChange={(e) => setUserName(e.target.value)}
-                    required
-                    className="w-full border rounded-md p-2"
-                  />
+                  <input type="text" value={userName} onChange={(e) => setUserName(e.target.value)} required className="w-full border rounded-md p-2" />
                 </div>
                 <div>
                   <label className="text-base font-medium text-gray-900">
                     Email address
                   </label>
-                  <input
-                    type="email"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    required
-                    className="w-full border rounded-md p-2"
-                  />
+                  <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} required className="w-full border rounded-md p-2"/>
                 </div>
                 <div>
                   <label className="text-base font-medium text-gray-900">
                     Password
                   </label>
-                  <input
-                    type="password"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    required
-                    className="w-full border rounded-md p-2"
-                  />
+                  <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} required className="w-full border rounded-md p-2" />
                 </div>
                 <div>
                   <label className="text-base font-medium text-gray-900">
                     Profile Picture
                   </label>
-                  <input
-                    type="file"
-                    accept="image/*"
-                    onChange={(e) => setAvatar(e.target.files[0])}
-                    className="w-full border rounded-md p-2"
-                  />
+                  <input type="file" accept="image/*" onChange={(e) => setAvatar(e.target.files[0])} className="w-full border rounded-md p-2" />
                 </div>
-                <button
-                  type="submit"
-                  className="w-full bg-gold text-white py-2 rounded-md"
-                >
+                <button type="submit" className="w-full bg-gold text-white py-2 rounded-md">
                   Create Account
                 </button>
                 <p><a className="text-sm text-blue-500 -200 hover:underline mt-4"><p>Have an account? <Link to="/login" >Login..</Link>  </p></a></p>

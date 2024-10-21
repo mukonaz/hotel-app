@@ -94,7 +94,6 @@ const AboutUs = () => {
         </div>
       </section>
 
-      {/* Contact Information Section */}
       <section className="bg-gray-900 py-12 text-white">
         <div className="container mx-auto px-6 text-center">
           <h2 className="text-3xl font-bold mb-6">Contact Us</h2>
