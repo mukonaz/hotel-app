@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { getAuth } from 'firebase/auth';
+import Loading from './Loading'
 import { getFirestore, doc, getDoc, updateDoc, deleteField } from 'firebase/firestore';
 
 const ProfilePage = () => {
   const [userData, setUserData] = useState(null);
   const [bookedRoom, setBookedRoom] = useState(null);
   const [error, setError] = useState('');
+  const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
   const auth = getAuth();
   const firestore = getFirestore();
@@ -38,7 +40,7 @@ const ProfilePage = () => {
         }
       } else {
         setError('User not authenticated');
-      }
+      }setLoading(false);
     };
 
     fetchUserData();
@@ -63,11 +65,14 @@ const ProfilePage = () => {
     return <div className="text-center text-red-500">{error}</div>;
   }
 
-  if (!userData) {
-    return <div className="text-center">Loading...</div>;
-  }
-
   return (
+    <>
+      {loading ? (
+        <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
+        <Loading /> 
+        </div>
+      ) : (
+  
     <div className="bg-gray-100 min-h-screen p-4">
       <div className="relative bg-white p-4 rounded-lg shadow-md max-w-md mx-auto">
         <button onClick={() => navigate(-1)} className="absolute top-2 left-2">
@@ -120,6 +125,8 @@ const ProfilePage = () => {
         </div>
       </div>
     </div>
+    
+            )}    </>
   );
 };
 

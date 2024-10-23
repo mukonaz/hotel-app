@@ -14,6 +14,7 @@ const RoomList = ({ room }) => {
   };
 
   return (
+    <section className="bg-gray-900 py-12 w-full">
     <div className='flex flex-wrap justify-center gap-6 mt-10'>
       <div className="p-4 max-w-sm">
       <div className="flex rounded-lg h-full dark:bg-gray-800 bg-teal-400 p-8 flex-col">
@@ -51,6 +52,7 @@ const RoomList = ({ room }) => {
     </div>
     </div>
     </div>
+    </section>
     
   );
 };

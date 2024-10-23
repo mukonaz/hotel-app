@@ -4,7 +4,7 @@ import { doc, getDoc } from 'firebase/firestore';
 import { useParams } from 'react-router-dom';
 
 const LuxuriousRooms = () => {
-  const { roomId } = useParams(); // Get the room ID from the URL params
+  const { roomId } = useParams(); 
   const [room, setRoom] = useState(null);
 
   useEffect(() => {
