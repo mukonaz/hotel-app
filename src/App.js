@@ -20,7 +20,7 @@ import ProfilePage from './components/ProfilePage';
 import PrivateRoute from './components/PrivateRoute';
 import ProtectedRoute from './components/ProtectedRoute';
 
-const stripePromise = loadStripe('');
+const stripePromise = loadStripe('pk_test_51Q7NSYExJqt3Kcq0MVlj8u5b5lvKsNgmpkvkhuZk5nY6Z7kfi4N7yFHcECwgWP9xrbNrwX6nytTiYhhysM8kbMND00KMJaP8z5');
 
 function App() {
   return (
