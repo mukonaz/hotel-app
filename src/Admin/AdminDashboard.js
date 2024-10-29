@@ -44,7 +44,7 @@ const AdminDashboard = () => {
           <img
             src={adminData.picture || "https://via.placeholder.com/150"}
             alt="Admin"
-            style={{ borderRadius: '50%', width: '150px', height: '150px', alignItems: 'center' }}
+            style={ {linkStyle, borderRadius: '50%', width: '150px', height: '150px', alignItems: 'center', justifyContent: 'center' }}
           />
           <h2>{adminData.name} {adminData.surname}</h2>
           <p>Email: {auth.currentUser.email}</p>
@@ -58,7 +58,7 @@ const AdminDashboard = () => {
               <img src="https://firebasestorage.googleapis.com/v0/b/hotel-app-688af.appspot.com/o/RoomList.png?alt=media&token=b10be3e6-df3c-4ca8-95dc-7705929895cc" alt="Room List Icon" />
               <h3>Room List</h3>
             </div>
-            <div onClick={() => navigate('/dashboard')} style={linkStyle}>
+            <div onClick={() => navigate('/admin-page')} style={linkStyle}>
               <img src="https://via.placeholder.com/100" alt="Edit Room Icon" />
               <h3>Edit Room</h3>
             </div>
