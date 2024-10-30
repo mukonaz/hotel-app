@@ -1,9 +1,28 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import { auth } from '../../firebase';
+import { signOut, onAuthStateChanged } from 'firebase/auth';
 
 const Navbar = () => {
-  const user = auth.currentUser;
+  const [user, setUser] = useState(null);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    // Listen for authentication state changes
+    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+      setUser(currentUser);
+    });
+    return () => unsubscribe(); // Clean up listener on component unmount
+  }, []);
+
+  const handleLogout = async () => {
+    try {
+      await signOut(auth);
+      navigate('/home'); // Redirect to login page after logout
+    } catch (error) {
+      console.error('Error logging out:', error);
+    }
+  };
 
   return (
     <nav className="bg-white shadow-md">
@@ -54,9 +73,12 @@ const Navbar = () => {
             </li>
           ) : (
             <li>
-              <Link to="/home" className="hover:text-gray-500">
+              <button
+                onClick={handleLogout}
+                className="hover:text-gray-500 focus:outline-none"
+              >
                 Logout
-              </Link>
+              </button>
             </li>
           )}
         </ul>
@@ -89,9 +111,12 @@ const Navbar = () => {
             </li>
           ) : (
             <li>
-              <Link to="/home" className="hover:text-gray-500">
+              <button
+                onClick={handleLogout}
+                className="hover:text-gray-500 focus:outline-none"
+              >
                 Logout
-              </Link>
+              </button>
             </li>
           )}
         </ul>

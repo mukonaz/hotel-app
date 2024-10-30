@@ -1,85 +1,106 @@
-import React, { useEffect, useState } from 'react';
-import { collection, getDocs, updateDoc, deleteDoc, doc } from 'firebase/firestore';
-import { db } from '../firebase'; // Update with the correct path to your Firebase config
+import React, { useState, useEffect } from 'react';
+import { db } from '../firebase';
+import { collection, getDocs, query, where, updateDoc, doc } from 'firebase/firestore';
 
 const AdminPage = () => {
   const [bookings, setBookings] = useState([]);
-  const [loading, setLoading] = useState(true);
 
+  // Fetch bookings from Firebase with query
   useEffect(() => {
     const fetchBookings = async () => {
       try {
-        const bookingsSnapshot = await getDocs(collection(db, 'bookings'));
-        const bookingData = bookingsSnapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
-        setBookings(bookingData);
+        // Use query to fetch all documents in the "booking" collection
+        const bookingCollectionRef = collection(db, 'booking');
+        const bookingQuery = query(bookingCollectionRef);
+        const querySnapshot = await getDocs(bookingQuery);
+
+        const bookingsData = querySnapshot.docs.map((doc) => ({
+          id: doc.id,
+          ...doc.data(),
+        }));
+
+        setBookings(bookingsData);
       } catch (error) {
-        console.error('Error fetching bookings:', error);
-      } finally {
-        setLoading(false);
+        console.error("Error fetching bookings:", error);
+        alert("Error fetching bookings. Please check permissions.");
       }
     };
 
     fetchBookings();
   }, []);
 
-  const handleApprove = async (bookingId) => {
+  const handleApproval = async (bookingId, status) => {
     try {
-      const bookingRef = doc(db, 'bookings', bookingId);
-      await updateDoc(bookingRef, { status: 'approved' });
-      setBookings((prev) => prev.map((b) => (b.id === bookingId ? { ...b, status: 'approved' } : b)));
+      const bookingRef = doc(db, 'booking', bookingId);
+      await updateDoc(bookingRef, { status });
+      setBookings((prev) =>
+        prev.map((booking) =>
+          booking.id === bookingId ? { ...booking, status } : booking
+        )
+      );
     } catch (error) {
-      console.error('Error approving booking:', error);
-      alert('Failed to approve booking. Please try again.');
+      console.error(`Error updating booking status to ${status}:`, error);
     }
   };
-
-  const handleReject = async (bookingId) => {
-    try {
-      await deleteDoc(doc(db, 'bookings', bookingId));
-      setBookings((prev) => prev.filter((b) => b.id !== bookingId));
-    } catch (error) {
-      console.error('Error rejecting booking:', error);
-      alert('Failed to reject booking. Please try again.');
-    }
-  };
-
-  if (loading) {
-    return <div className="flex items-center justify-center h-screen">Loading...</div>;
-  }
 
   return (
-    <div className="min-h-screen bg-gray-100 p-8">
-      <h2 className="text-3xl font-bold text-center mb-6">Manage Room Bookings</h2>
-      <div className="container mx-auto">
-        {bookings.length > 0 ? (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {bookings.map((booking) => (
-              <div key={booking.id} className="bg-white shadow-lg rounded-lg p-6">
-                <h3 className="text-xl font-semibold mb-2">Booking Request</h3>
-                <p><strong>Room ID:</strong> {booking.roomId}</p>
-                <p><strong>User ID:</strong> {booking.userId}</p>
-                <p><strong>Price:</strong> ${booking.totalPrice}</p>
-                <p><strong>Status:</strong> {booking.status || 'Pending'}</p>
-                <div className="flex justify-between mt-4">
-                  <button
-                    onClick={() => handleApprove(booking.id)}
-                    className="bg-green-500 hover:bg-green-600 text-white font-semibold py-2 px-4 rounded"
-                  >
-                    Approve
-                  </button>
-                  <button
-                    onClick={() => handleReject(booking.id)}
-                    className="bg-red-500 hover:bg-red-600 text-white font-semibold py-2 px-4 rounded"
-                  >
-                    Reject
-                  </button>
-                </div>
-              </div>
-            ))}
-          </div>
-        ) : (
-          <p className="text-center text-gray-500">No booking requests available</p>
-        )}
+    <div className="min-h-screen bg-gray-100 py-6">
+      <div className="container mx-auto p-6 bg-white shadow-lg rounded-lg">
+        <h2 className="text-2xl font-bold mb-4">Admin - Room Bookings</h2>
+        <div className="overflow-x-auto">
+          <table className="table-auto w-full text-left border-collapse">
+            <thead>
+              <tr className="bg-gray-200">
+                <th className="p-3 font-semibold">Room ID</th>
+                <th className="p-3 font-semibold">User ID</th>
+                <th className="p-3 font-semibold">Price</th>
+                <th className="p-3 font-semibold">Status</th>
+                <th className="p-3 font-semibold">Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {bookings.map((booking) => (
+                <tr key={booking.id} className="bg-white border-b hover:bg-gray-100">
+                  <td className="p-3">{booking.roomId}</td>
+                  <td className="p-3">{booking.userId}</td>
+                  <td className="p-3">${booking.price}</td>
+                  <td className="p-3">
+                    <span
+                      className={`px-2 py-1 text-sm rounded ${
+                        booking.status === 'approved'
+                          ? 'bg-green-200 text-green-700'
+                          : booking.status === 'rejected'
+                          ? 'bg-red-200 text-red-700'
+                          : 'bg-yellow-200 text-yellow-700'
+                      }`}
+                    >
+                      {booking.status || 'Pending'}
+                    </span>
+                  </td>
+                  <td className="p-3 space-x-2">
+                    <button
+                      onClick={() => handleApproval(booking.id, 'approved')}
+                      className="bg-green-500 text-white px-3 py-1 rounded hover:bg-green-600"
+                      disabled={booking.status === 'approved'}
+                    >
+                      Approve
+                    </button>
+                    <button
+                      onClick={() => handleApproval(booking.id, 'rejected')}
+                      className="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600"
+                      disabled={booking.status === 'rejected'}
+                    >
+                      Reject
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+          {bookings.length === 0 && (
+            <p className="text-center text-gray-500 mt-4">No bookings found.</p>
+          )}
+        </div>
       </div>
     </div>
   );
